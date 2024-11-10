@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
-import { BrowserRouter, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { VscLoading } from "react-icons/vsc";
 
 type Inputs = {
   email: string;
@@ -11,27 +12,41 @@ export default function LoginForm() {
   const [loggedIn, setLoggedIn] = useState(false);
   const navigate = useNavigate();
 
+  // This effect runs when loggedIn state changes
   useEffect(() => {
-    loggedIn && navigate("/");
-  }, [loggedIn]);
+    if (loggedIn) {
+      navigate("/"); // Redirect to the home page when logged in
+    }
+  }, [loggedIn, navigate]);
 
   const inputClasses = "rounded-lg h-10 w-full text-gray-700";
 
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isSubmitting },
+    setError,
   } = useForm<Inputs>();
+
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
-    const fetchData = await fetch(process.env.BACKEND_API! + "/login", {
-      method: "POST",
-      body: JSON.stringify(data),
-    });
-    const fetchedData = await fetchData.json();
-    if (fetchedData.error) errors.root!.message = fetchedData.error;
-    if (fetchData.status == 200) {
-      console.log("hello");
-      setLoggedIn(true);
+    try {
+      const fetchData = await fetch(process.env.BACKEND_API! + "/login", {
+        method: "POST",
+        body: JSON.stringify(data),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      const fetchedData = await fetchData.json();
+
+      if (fetchedData.error) {
+        setError("root", { message: fetchedData.error }); // Set the error using setError
+      } else if (fetchData.status === 200) {
+        setLoggedIn(true); // If login is successful, update loggedIn state
+      }
+    } catch (error) {
+      setError("root", { message: "An error occurred while logging in" }); // Handle any errors that occur during fetch
     }
   };
 
@@ -63,10 +78,11 @@ export default function LoginForm() {
         {errors.email && <p role="alert">{errors.email.message}</p>}
         {errors.root && <p role="alert">{errors.root.message}</p>}
         <button
-          className="p-2 bg-blue-950 w-1/2 md:w-1/4 rounded-lg self-center"
+          className="flex flex-row items-center justify-center p-2 bg-blue-950 w-1/2 md:w-1/4 rounded-lg self-center"
           type="submit"
+          disabled={isSubmitting}
         >
-          login
+          {isSubmitting ? <VscLoading className="animate-spin" /> : "login"}
         </button>
       </form>
     </div>

@@ -1,22 +1,24 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 import "./index.css";
 import LoginForm from "./components/LoginForm";
-
-const router = createBrowserRouter([
-	{
-		path: "/",
-		element: <h1 className='text-3xl text-red-700'>Hello world!</h1>,
-	},
-	{
-		path: "/login",
-		element: <LoginForm />,
-	},
-]);
+import Home from "./directories/home";
+import AuthGuard from "./components/AuthGuard";
+import { authChech } from "./lib/auth";
 
 createRoot(document.getElementById("root")!).render(
-	<StrictMode>
-		<RouterProvider router={router} />
-	</StrictMode>,
+  <StrictMode>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<AuthGuard authFunc={await authChech()} />}>
+          <Route path="/" element={<Home />} />
+        </Route>
+        <Route
+          path="/login"
+          element={<LoginForm authFunc={await authChech()} />}
+        />
+      </Routes>
+    </BrowserRouter>
+  </StrictMode>
 );
