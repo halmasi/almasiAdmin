@@ -2,7 +2,7 @@ import { ReactNode, useState } from "react";
 import Header from "../components/Header";
 import SideBar from "../components/SideBar";
 
-export default function Home({ children }: { children?: ReactNode }) {
+export default function Layout({ children }: { children?: ReactNode }) {
 	const [showMenu, setShowMenu] = useState(false);
 	const menuToggler = () => {
 		setShowMenu(!showMenu);
@@ -18,9 +18,7 @@ export default function Home({ children }: { children?: ReactNode }) {
 				>
 					<SideBar menuToggler={menuToggler} />
 				</div>
-				<main className='w-4/4 md:w-10/12 h-[200svh]'>
-					{children || "home"}
-				</main>
+				<main className='w-full md:w-10/12 h-[200svh]'>{children}</main>
 			</div>
 		</body>
 	);
