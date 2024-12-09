@@ -8,15 +8,15 @@ type Inputs = {
   password: string;
 };
 
-export default function LoginForm() {
+export default function LoginForm({ authFunc }: { authFunc: boolean }) {
   const [loggedIn, setLoggedIn] = useState(false);
   const navigate = useNavigate();
 
-  // This effect runs when loggedIn state changes
   useEffect(() => {
-    if (loggedIn) {
-      navigate("/"); // Redirect to the home page when logged in
-    }
+    authFunc && setLoggedIn(true);
+  }, []);
+  useEffect(() => {
+    loggedIn && navigate("/");
   }, [loggedIn, navigate]);
 
   const inputClasses = "rounded-lg h-10 w-full text-gray-700";
@@ -25,28 +25,22 @@ export default function LoginForm() {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
-    setError,
   } = useForm<Inputs>();
-
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
-    try {
-      const fetchData = await fetch(process.env.BACKEND_API! + "/login", {
-        method: "POST",
-        body: JSON.stringify(data),
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-
-      const fetchedData = await fetchData.json();
-
-      if (fetchedData.error) {
-        setError("root", { message: fetchedData.error }); // Set the error using setError
-      } else if (fetchData.status === 200) {
-        setLoggedIn(true); // If login is successful, update loggedIn state
-      }
-    } catch (error) {
-      setError("root", { message: "An error occurred while logging in" }); // Handle any errors that occur during fetch
+    const fetchData = await fetch(process.env.BACKEND_API! + "/login", {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      credentials: "include",
+      body: JSON.stringify(data),
+    });
+    const fetchedData = await fetchData.json();
+    if (fetchedData.error) errors.root!.message = fetchedData.error;
+    if (fetchData.status == 200) {
+      setLoggedIn(true);
+      window.location.reload();
     }
   };
 
