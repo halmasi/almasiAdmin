@@ -1,8 +1,9 @@
-import { ReactNode, useState } from "react";
+import { useState } from "react";
 import Header from "../components/Header";
 import SideBar from "../components/SideBar";
+import { Outlet } from "react-router-dom";
 
-export default function Layout({ children }: { children?: ReactNode }) {
+export default function Layout() {
 	const [showMenu, setShowMenu] = useState(false);
 	const menuToggler = () => {
 		setShowMenu(!showMenu);
@@ -18,7 +19,9 @@ export default function Layout({ children }: { children?: ReactNode }) {
 				>
 					<SideBar menuToggler={menuToggler} />
 				</div>
-				<main className='w-full md:w-10/12 h-[200svh]'>{children}</main>
+				<main className='w-full md:w-10/12 h-[200svh] p-2'>
+					<Outlet />
+				</main>
 			</div>
 		</body>
 	);

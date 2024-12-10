@@ -1,3 +1,9 @@
+import { Outlet } from "react-router-dom";
+
 export default function Posts() {
-  return <div>Posts</div>;
+	return (
+		<div>
+			<Outlet />
+		</div>
+	);
 }
