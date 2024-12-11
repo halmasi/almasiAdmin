@@ -9,7 +9,7 @@ export default function Layout() {
 		setShowMenu(!showMenu);
 	};
 	return (
-		<body className='min-h-svh'>
+		<div className='min-h-svh'>
 			<Header menuToggler={menuToggler} />
 			<div className='flex flex-row'>
 				<div
@@ -23,6 +23,6 @@ export default function Layout() {
 					<Outlet />
 				</main>
 			</div>
-		</body>
+		</div>
 	);
 }
