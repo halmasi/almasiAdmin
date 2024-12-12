@@ -12,25 +12,25 @@ import Dashboard from "./directories/Dashboard";
 import PostsList from "./components/PostsList";
 
 createRoot(document.getElementById("root")!).render(
-	<StrictMode>
-		<BrowserRouter>
-			<Routes>
-				<Route path='' element={<AuthGuard authFunc={await authCheck()} />}>
-					<Route path='' element={<Layout />}>
-						<Route path='' element={<Dashboard />} />
-						<Route path='messages' element={<Messages />} />
-						<Route path='posts' element={<Posts />}>
-							<Route path='' element={<Dashboard />} />
-							<Route path='list' element={<PostsList />} />
-						</Route>
-					</Route>
-				</Route>
-				<Route
-					path='/login'
-					element={<LoginForm authFunc={await authCheck()} />}
-				/>
-				<Route path='*' element={<div>not found</div>} />
-			</Routes>
-		</BrowserRouter>
-	</StrictMode>,
+  <StrictMode>
+    <BrowserRouter>
+      <Routes>
+        <Route path="" element={<AuthGuard authFunc={await authCheck()} />}>
+          <Route path="" element={<Layout />}>
+            <Route path="" element={<Dashboard />} />
+            <Route path="messages" element={<Messages />} />
+            <Route path="posts" element={<Posts />}>
+              <Route path="" element={<Dashboard />} />
+              <Route path="list" element={<PostsList />} />
+            </Route>
+            <Route path="*" element={<div>not found</div>} />
+          </Route>
+        </Route>
+        <Route
+          path="/login"
+          element={<LoginForm authFunc={await authCheck()} />}
+        />
+      </Routes>
+    </BrowserRouter>
+  </StrictMode>
 );
