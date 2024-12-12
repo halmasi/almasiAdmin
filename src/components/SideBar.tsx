@@ -28,58 +28,23 @@ export default function SideBar({ menuToggler }: { menuToggler: () => void }) {
 				</li>
 				<li
 					onClick={() => {
-						if (subMenu.menu != "messages")
-							setSubMenu({ state: true, menu: "messages" });
-						else if (
-							subMenu.menu == "messages" &&
-							subMenu.state == true &&
-							!location.pathname.startsWith("/messages")
-						)
-							setSubMenu({ state: false, menu: "" });
+						setSubMenu({ state: false, menu: "" });
 					}}
 				>
-					<div className='flex items-center justify-between'>
-						<Link
-							className={`flex items-center w-fit ${
-								location.pathname.startsWith("/messages") && "text-blue-300"
-							}`}
-							to='/messages'
-							onClick={menuToggler}
-						>
-							{location.pathname == "/messages" ? (
-								<TiChevronRightOutline />
-							) : (
-								<BsDot />
-							)}
-							Messages
-						</Link>
-						<TiArrowSortedDown />
-					</div>
-					<div
-						className={`pl-4 bg-gray-500 ${
-							subMenu.menu == "messages" && subMenu.state == true
-								? ""
-								: "hidden"
+					<Link
+						className={`flex items-center w-fit ${
+							location.pathname.startsWith("/messages") && "text-blue-300"
 						}`}
+						to='/messages'
+						onClick={menuToggler}
 					>
-						<Link
-							className={`flex items-center ${
-								location.pathname == "/messages/list" && "text-blue-300"
-							} w-fit inline`}
-							to='/messages/list'
-							onClick={() => {
-								menuToggler();
-								setSubMenu({ state: true, menu: "messages" });
-							}}
-						>
-							{location.pathname == "/messages/list" ? (
-								<TiChevronRightOutline />
-							) : (
-								<BsDot />
-							)}
-							lists
-						</Link>
-					</div>
+						{location.pathname == "/messages" ? (
+							<TiChevronRightOutline />
+						) : (
+							<BsDot />
+						)}
+						Messages
+					</Link>
 				</li>
 				<li
 					onClick={() => {
@@ -110,7 +75,7 @@ export default function SideBar({ menuToggler }: { menuToggler: () => void }) {
 								<BsDot />
 							)}
 							Posts
-						</Link>{" "}
+						</Link>
 						<TiArrowSortedDown />
 					</div>
 					<div

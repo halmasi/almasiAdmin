@@ -19,7 +19,7 @@ export default function Layout() {
 				>
 					<SideBar menuToggler={menuToggler} />
 				</div>
-				<main className='w-full md:w-10/12 h-[200svh] p-2'>
+				<main className='w-full md:w-10/12 min-h-svh p-2'>
 					<Outlet />
 				</main>
 			</div>
